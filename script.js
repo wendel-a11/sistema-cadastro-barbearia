@@ -41,6 +41,15 @@ formulario.addEventListener("submit", function(event) {
         return;
     }
 
+    const telefoneExiste = clientes.some(
+        cliente => cliente.telefone === telefone
+    );
+
+    if (telefoneExiste) {
+        alert("Este telefone já está cadastrado!");
+        return;
+    }
+
     const cliente = {
         id: Date.now(),
         nome: nome,
@@ -70,19 +79,31 @@ function editarCliente(id) {
         return;
     }
 
+    const telefoneExiste = clientes.some(
+        c => c.telefone === novoTelefone.trim() && c.id !== id
+    );
+
+    if (telefoneExiste) {
+        alert("Este telefone já pertence a outro cliente!");
+        return;
+    }
+
     cliente.nome = novoNome.trim();
     cliente.telefone = novoTelefone.trim();
 
     salvarDados();
     listarClientes();
+
     alert("Cliente atualizado!");
 }
 
 function excluirCliente(id) {
     if (confirm("Deseja excluir este cliente?")) {
         clientes = clientes.filter(c => c.id !== id);
+
         salvarDados();
         listarClientes();
+
         alert("Cliente excluído!");
     }
 }
@@ -110,6 +131,7 @@ pesquisa.addEventListener("input", function() {
 
         item.appendChild(editar);
         item.appendChild(excluir);
+
         lista.appendChild(item);
     });
 });
